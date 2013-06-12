@@ -32,6 +32,7 @@ subscribe to the list.  You can access previous messages via
 <ul>
       <li>Received: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.1">2013/05/31</a></li>
       <li>Draft: 2013/06/01-2013/08/01</li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.2">2013/6/09</a></li>
     </ul>
 
 <H1>Abstract</H1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered mutable collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equivalence procedure</em>; bags do not.  <em>Integer sets</em> are a variant of sets that can only contain non-negative exact integers that are less than a maximum value specified when the integer set is created, and that always treat numerical equality as their equivalence procedure.  <em>Enumeration sets</em> are another variant that can only contain symbols chosen from a set of symbols represented by an <em>enumeration type</em>; the equivalence procedure for them is <em>eq?</em>.
@@ -44,11 +45,25 @@ subscribe to the list.  You can access previous messages via
 
 This would bind <tt>&lt;type-name&gt;</tt> to the enum-type, and <tt>constructor</tt> to a curried version of <tt>make-enum-set</tt> that already knows what type to use.
 
-</p></blockquote></li><li><p>Should there be a mechanism to convert between integer sets and integers as bitvectors, as defined in SRFI 33, SRFI 60, and R6RS?</p></li><li><p>Currently you can convert one set type to another via lists.  Are conversions directly through sets (or bags) useful enough to justify enlarging the SRFI?  What about direct conversions between other types?</p></li><li><p>How about <tt>set-intern!</tt>, which is like <tt>set-value</tt> but adds the element to the set if it's not already there?</p></li></ol><H1>Rationale</H1><p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, Java, and C++. Although sets subsume integer sets and enumeration sets, providing them separately allows for increased implementation efficiency.</p><p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.</p><p>
+</p></blockquote></li><li><p>Should there be a mechanism to convert between integer sets and integers as bitvectors, as defined in SRFI 33, SRFI 60, and R6RS?</p></li><li><p>(resolved)</p></li><li><p>How about <tt>set-intern!</tt>, which is like <tt>set-value</tt> but adds the element to the set if it's not already there?</p></li><li><p>Should there be a lexical syntax for sets?  If so, how do we incorporate the equivalence procedure, which has no printed representation?  Perhaps we only need to support the big five, or perhaps not even <code>eq?</code> as it is implementation-dependent.</p></li><li><p>(resolved)</p></li><li><p>(resolved)</p></li><li><p>Should we switch to unique enum objects rather than symbols?</p></li><li><p>(resolved)</p></li><li><p>Should set operations include an operation that adds an element to a set, returning a newly allocated set, but which does not require wrapping the new element in a set that is going to be thrown away immediately?  In other words, should there be a functional analog to <code>set-add!</code>?</p></li>
 
-The design of enumeration sets is founded on <a class="ext-link" href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html">R6RS enumerations</a>, but with the addition of reified enumeration types along the lines suggested by <a class="ext-link" href="http://www.r6rs.org/formal-comments/comment-262.txt"><span class="icon">​</span>R6RS Formal Comment #262</a>.  The prefix <tt>enum</tt> is used in all cases instead of using both <tt>enum</tt> and <tt>enumeration</tt> as R6RS does.  Approximate mappings are shown below.
+<li><p>There are two constructors, <code>make-set</code> and <code>set</code> (and likewise
+for the other types).  This follows the general pattern of
+<code>(make-){list,string,vector}</code> from R7RS-small.  However, the <code>make-</code>
+constructors construct an object of specified size with either undefined
+contents or a repeated fill element; neither of these concepts makes any
+sense for sets, and only minimal sense for bags.</p>
 
-</p><H1>Specification</H1><p>The procedures in this SRFI are in the <code>(scheme sets)</code> and <code>(srfi xxx)</code> libraries (or <code>(srfi :xxx)</code> on R6RS).  However, the sample implementation currently places them in the <code>(sets)</code> library instead.</p><p>
+<p>So it would seem reasonable to only have <code>set</code> as the constructor.
+Nevertheless, Schemers expect to find a <code>make-</code> constructor, and so I
+have provided one that always constructs an empty set, though <code>set</code>
+can do that just as well.  Should we keep the status quo, eliminate
+<code>make-set</code>, eliminate <code>set</code>, or cause it to be an alias for <code>set</code>?</p></li>
+</ol>
+
+
+<H1>Rationale</H1><p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.</p><p>Bags are useful for counting anything from a fixed set of possibilities, e.g. the number of each type of error in a log file or the number of uses of each word in a lexicon drawn from a body of documents.  Although other data structures can serve the same purpose, using bags clearly expresses the programmer's intent and can be optimized.</p><p>Although sets subsume both integer sets and enumeration sets, providing them separately allows for increased implementation efficiency.  There are two Chicken eggs that provide integer sets: <a href="http://wiki.call-cc.org/eggref/4/iset#integer-sets"><code>iset</code></a>, which is conceptually similar to the integer sets described here, but using bignums rather than bytevectors; and <a href="http://wiki.call-cc.org/eggref/4/cis"><code>cis</code></a>, which uses lists of integer intervals.</p><p>The design of enumeration sets is founded on <a class="ext-link" href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html">R6RS enumerations</a>, but with the addition of reified enumeration types along the lines suggested by <a class="ext-link" href="http://www.r6rs.org/formal-comments/comment-262.txt">R6RS Formal Comment #262</a>.  The prefix <tt>enum</tt> is used in all cases instead of using both <tt>enum</tt> and <tt>enumeration</tt> as R6RS does.  Approximate mappings are shown below.
+</p><p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in the collection, because <code>length</code> implies order.</p><H1>Specification</H1><p>The procedures in this SRFI are in the <code>(scheme sets)</code> and <code>(srfi xxx)</code> libraries (or <code>(srfi :xxx)</code> on R6RS).  However, the sample implementation currently places them in the <code>(sets)</code> library instead.</p><p>
 
 Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.
 
@@ -163,16 +178,16 @@ Returns two values, a newly allocated set with the same equivalence predicate as
 
 Returns the number of elements of <em>set</em> that satisfy <em>predicate</em> as an exact integer.
 
-</p><p><tt>(set-find </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
+</p><p><tt>(set-find </tt><em>predicate set failure</em><tt>)</tt></p><p>
 
-Returns an arbitrarily chosen element of <em>set</em> that satisfies <em>predicate</em>, or <code>#f</code> if there is none.  Note the ambiguity: if you are searching for <code>#f</code>, you cannot tell if you have found it or not.
-</p><p><tt>(set-any </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
+Returns an arbitrarily chosen element of <em>set</em> that satisfies <em>predicate</em>, or the result of invoking <em>failure</em> with no arguments if there is none.
+</p><p><tt>(set-any? </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
 
-Returns <tt>#t</tt> if any element of <em>set</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.
+Returns <tt>#t</tt> if any element of <em>set</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.  Note that this differs from the SRFI 1 analogue because it does not return a useful value.
 
-</p><p><tt>(set-every </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
+</p><p><tt>(set-every? </tt><em>predicate</em><tt> </tt><em>set</em><tt>)</tt></p><p>
 
-Returns <tt>#t</tt> if every element of <em>set</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.
+Returns <tt>#t</tt> if every element of <em>set</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.  Note that this differs from the SRFI 1 analogue because it does not return a useful value.  
 
 </p><h3>Set operations</h3><p><tt>(set-union </tt><em>set<sub>1</sub></em><tt> </tt><em>set<sub>2</sub></em> ...<tt>)</tt>
 
@@ -210,9 +225,21 @@ The procedures for creating and manipulating bags are the same as those for sets
 
 Returns an exact integer representing the number of times that <em>element</em> appears in <em>bag</em>.
 
+</p><p><tt>(bag-for-each-unique </tt><em>proc</em><tt> </tt><em>bag</em><tt>)</tt></p><p>
+
+Applies <em>proc</em> to each unique element of <em>bag</em> in arbitrary order, passing the element and the number of times it occurs in <em>bag</em>, and discarding the returned values.  Returns unspecified results.
+
+</p><p><tt>(bag-fold-unique </tt><em>proc</em><tt> </tt><em>nil</em><tt> </tt><em>bag</em><tt>)</tt></p><p>
+
+Invokes <em>proc</em> on each unique element of <em>bag</em> in arbitrary order, passing the number of occurrences as a second argument and the result of the previous invocation as a third argument.  For the first invocation, <em>nil</em> is used as the third argument.  Returns the result of the last invocation.
+
 </p><p><tt>(bag-increment! </tt><em>bag<tt> </tt>element<tt> </tt>count</em><tt>)</tt></p><p><tt>(bag-decrement! </tt><em>bag<tt> </tt>element<tt> </tt>count</em><tt>)</tt></p><p>
 
 Increases or decreases the element count of <em>element</em> in <em>bag</em> by the exact integer <em>count</em>.
+
+</p><p><tt>(bag->set </tt><em>bag</em><tt>)</tt></p><p><tt>(set->bag </tt><em>set</em><tt>)</tt></p><p>
+
+The <code>bag->set</code> procedure returns a newly allocated set containing the unique elements of <em>bag</em>.  The <code>set->bag</code> procedure returns a newly allocated bag containing the elements of <em>set</em>.
 
 </p><h2 id="Integersetprocedures">Integer set procedures</h2><p>
 
@@ -256,33 +283,37 @@ The procedure <tt>enum-set-value</tt> is just the identity function, so it is no
 
 </p><h3>Enum-type procedures</h3><p><tt>(make-enum-type </tt><em>enum-list</em><tt>)</tt></p><p>
 
-Returns a newly allocated enumeration type suitable for constructing enumeration sets whose members are symbols.  The elements of <em>enum-list</em> are either symbols or else pairs where the car is a symbol and the cdr is a distinct non-negative exact integer used to represent the symbol internally.  If the element is a symbol, the implementation assigns its own choice of a distinct non-negative exact integer.  These integers are called <em>indexes</em>.  The symbols are said to be <em>in the enumeration type</em>.  In R6RS the function of this procedure is provided as part of <tt>make-enumeration</tt>.
+Returns a newly allocated enumeration type suitable for constructing enumeration sets whose members are symbols.  The elements of <em>enum-list</em> are either symbols or else pairs where the car is a symbol and the cdr is an exact integer called the <em>value</em> of the symbol.  If the element is a symbol, the value is greater by 1 than the value of the previous symbol, or 0 if there was no previous symbol.  Values are normally distinct, but <code>make-enum-type</code> intentionally does not enforce this, for compatibility with C/C++ external routines.  The symbols are said to be <em>in the enumeration type</em>.  In R6RS the function of this procedure is provided as part of <tt>make-enumeration</tt>, but the values (called indexes) are assigned from 0 on up.
 
-</p><p><tt>(enum-type-enums </tt><em>enum-type</em><tt>)</tt></p><p>
+</p><p><tt>(enum-type? </tt><em>obj</em><tt>)</tt></p><p>
 
-Return a newly allocated alist mapping the symbols in <em>enum-type</em> to their indexes.
+Returns <tt>#t</tt> if <em>obj</em> is an enumeration type, and <tt>#f</tt> otherwise.
 
-</p><p><tt>(enum-type-index </tt><em>enum-type symbol</em><tt>)</tt></p><p>
+</p><p><tt>(enum-type->alist </tt><em>enum-type</em><tt>)</tt></p><p>
 
-Return the index of <em>symbol</em> in <em>enum-type</em>, or <tt>#f</tt> if it is not in <em>enum-type</em>.  The R6RS equivalent is the procedure returned by <tt>enum-type-indexer</tt> when applied to an enum-set belonging to <tt>enum-type</tt>.
+Return a newly allocated alist mapping the symbols in <em>enum-type</em> to their values.
 
-</p><p><tt>(enum-type-symbol </tt><em>enum-type index</em><tt>)</tt></p><p>
+</p><p><tt>(enum-type-symbol-value </tt><em>enum-type symbol</em><tt>)</tt></p><p>
 
-Returns the symbol whose index  in <em>enum-type</em> is <em>index</em>, or <tt>#f</tt> if there is none.
+Return the value of <em>symbol</em> in <em>enum-type</em>, or <tt>#f</tt> if it is not in <em>enum-type</em>.  A loose R6RS analogue is the procedure returned by <tt>enum-type-indexer</tt> when applied to an enum-set belonging to <tt>enum-type</tt>.
 
-</p><p><tt>(enum=? </tt><em>enum-type symbol</em> ...<tt>)</tt>
+</p><p><tt>(enum-type-symbol </tt><em>enum-type value</em><tt>)</tt></p><p>
 
-</p><p><tt>(enum&lt;? </tt><em>enum-type symbol</em> ...<tt>)</tt>
+Returns the first symbol whose value in <em>enum-type</em> is <em>value</em>, or <tt>#f</tt> if there is none.
 
-</p><p><tt>(enum&gt;? </tt><em>enum-type symbol</em> ...<tt>)</tt>
+</p><p><tt>(enum-value=? </tt><em>enum-type symbol</em> ...<tt>)</tt>
 
-</p><p><tt>(enum&lt;=? </tt><em>enum-type symbol</em> ...<tt>)</tt>
+</p><p><tt>(enum-value&lt;? </tt><em>enum-type symbol</em> ...<tt>)</tt>
 
-</p><p><tt>(enum&gt;=? </tt><em>enum-type symbol</em> ...<tt>)</tt>
+</p><p><tt>(enum-value&gt;? </tt><em>enum-type symbol</em> ...<tt>)</tt>
+
+</p><p><tt>(enum-value&lt;=? </tt><em>enum-type symbol</em> ...<tt>)</tt>
+
+</p><p><tt>(enum-value&gt;=? </tt><em>enum-type symbol</em> ...<tt>)</tt>
 
 </p><p>
 
-Returns <tt>#t</tt> if the indexes of the <em>symbols</em> are equal (which implies that the symbols themselves are <code>eq?</code>), monotonically increasing, monotonically decreasing, monotonically nondecreasing, and monotonically nonincreasing respectively, and <tt>#f</tt> otherwise.
+Returns <tt>#t</tt> if the values of the <em>symbols</em> are equal (which implies that the symbols themselves are <code>eq?</code>), monotonically increasing, monotonically decreasing, monotonically nondecreasing, and monoonically nonincreasing respectively, and <tt>#f</tt> otherwise.
 
 </p><h3>Enum-set procedures</h3><p><tt>(make-enum-set </tt><em>enum-type</em><tt>)</tt></p><p>
 
@@ -322,7 +353,7 @@ Returns and deletes the smallest or largest symbol in symbol index order in <em>
 
 Returns a newly allocated enumeration set of type <em>enum-type</em>.  Its elements are the symbols belonging to <em>enum-set</em>, ignoring any symbols which are not in <em>enum-type</em>.  This procedure is also in R6RS, but uses a second enum-set in place of <em>enum-type</em>.
 
-</p><H1>Implementation</H1><p><b>Note: the present implementation does not yet support <tt>set-find</tt>, <tt>set-any</tt>, <tt>set-every</tt>, or the corresponding bag, integer set, and enum-set procedures.</b></p><p>Sets and bags are implemented as a thin veneer over hashtables, and integer sets over bytevectors.  For clarity, the integer set implementation stores  just one value into each bytevector element rather than the eight that would be possible.  In turn, enumeration types are implemented over a hashtable from symbols to indexes, and enumeration sets over integer sets.</p><p>A sample implementation is <a href="sets.tar.gz">here</a>.  The files <code>sets-impl.scm</code>, <code>bags-impl.scm</code>, <code>isets-impl.scm</code>, and <code>enums-impl.scm</code> are the basic code libraries for sets, bags, integer sets, and enumeration sets respectively.  Each is divided into a section that makes use of the underlying collection and a section that doesn't.  The file <code>count.scm</code> provides macros for conveniently looping over the bytevectors that underlie integer sets and enumeration sets. The file <code>srfi-4-shim.scm</code> is a minimal implementation of R7RS bytevectors on top of SRFI 4's u8vectors, just sufficient for this implementation, and may be useful for R5RS systems that do not provide R7RS bytevectors.</p><p>Two library definition files are provided:  <code>sets.sld</code> provides an R7RS library named <code>(sets)</code> that exports the public procedures of this SRFI (the extension <code>.sld</code> is used by Chibi for library definition files).  <code>sets.scm</code> is equivalent, but uses Chicken module syntax.</p><p>The file <code>sets-test.scm</code> is a test suite for this library.  It uses Chicken's <code>test</code> egg, which is also provided on Chibi as an R7RS library named <code>(chibi test)</code>.</p>
+</p><H1>Implementation</H1><p>Sets and bags are implemented as a thin veneer over hashtables, and integer sets over bytevectors.  For clarity, the integer set implementation stores  just one value into each bytevector element rather than the eight that would be possible.  In turn, enumeration types are implemented over a hashtable from symbols to indexes, and enumeration sets over integer sets.</p><p>A sample implementation is <a href="sets.tar.gz">here</a>.  The files <code>sets-impl.scm</code>, <code>bags-impl.scm</code>, <code>isets-impl.scm</code>, and <code>enums-impl.scm</code> are the basic code libraries for sets, bags, integer sets, and enumeration sets respectively.  Each is divided into a section that makes use of the underlying collection and a section that doesn't.  The file <code>count.scm</code> provides macros for conveniently looping over the bytevectors that underlie integer sets and enumeration sets. The file <code>srfi-4-shim.scm</code> is a minimal implementation of R7RS bytevectors on top of SRFI 4's u8vectors, just sufficient for this implementation, and may be useful for R5RS systems that do not provide R7RS bytevectors.</p><p>Two library definition files are provided:  <code>sets.sld</code> provides an R7RS library named <code>(sets)</code> that exports the public procedures of this SRFI (the extension <code>.sld</code> is used by Chibi for library definition files).  <code>sets.scm</code> is equivalent, but uses Chicken module syntax.</p><p>The file <code>sets-test.scm</code> is a test suite for this library.  It uses Chicken's <code>test</code> egg, which is also provided on Chibi as an R7RS library named <code>(chibi test)</code>.</p>
 
 <H1>Copyright</H1>
 
