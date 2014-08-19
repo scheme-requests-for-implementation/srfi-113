@@ -37,6 +37,7 @@ subscribe to the list.  You can access previous messages via
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.4">2013/12/04</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.5">2014/03/31</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.6">2014/08/15</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.7">2014/08/19</a></li>
     </ul>
 
 
@@ -46,9 +47,9 @@ subscribe to the list.  You can access previous messages via
 
 <h1>Rationale</h1>
 
-<p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.</p>
+<p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.  <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> also provides a list-based implementation of sets.</p>
 
-<p>Bags are useful for counting anything from a fixed set of possibilities, e.g. the number of each type of error in a log file or the number of uses of each word in a lexicon drawn from a body of documents.  Although other data structures can serve the same purpose, using bags clearly expresses the programmer's intent and can be optimized.</p>
+<p>Bags are useful for counting anything from a fixed set of possibilities, e.g. the number of each type of error in a log file or the number of uses of each word in a lexicon drawn from a body of documents.  Although other data structures can serve the same purpose, using bags clearly expresses the programmer's intent and allows for optimization.</p>
 
 <p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in a collection, because <code>length</code> implies order.</p>
 
@@ -56,7 +57,7 @@ subscribe to the list.  You can access previous messages via
 
 <p>Sets and bags do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
 
-<p>The interface to general sets and bags depends on <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparators, despite that SRFI having a higher number than this one for hysterical raisins. Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
+<p>The interface to general sets and bags depends on <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparators, despite that SRFI having a higher number than this one for <a href="http://www.catb.org/jargon/html/H/hysterical-reasons.html">hysterical raisins</a>. Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
 
 <h1>Specification</h1>
 
@@ -67,6 +68,8 @@ subscribe to the list.  You can access previous messages via
 <p>It is an error to mutate any object while it is contained in a set or bag.</p>
 
 <p>It is an error to add an object to a set or bag which does not satisfy the type test predicate of the comparator.</p>
+
+<p>It is an error to add or remove an object for a set or a bag while iterating over it.</p>
 
 <h2>Linear update</h2>
 
@@ -219,23 +222,34 @@ Returns the number of elements of <em>set</em> that satisfy <em>predicate</em> a
 
 </p><p><code>(set-any? </code><em>predicate set</em><code>)</code></p><p>
 
-Returns <code>#t</code> if any element of <em>set</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.  Note that this differs from the SRFI 1 analogue because it does not return a useful value.
+Returns <code>#t</code> if any element of <em>set</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.  Note that this differs from the SRFI 1 analogue because it does not return an element of the set.
 
 </p><p><code>(set-every? </code><em>predicate set</em><code>)</code></p><p>
 
-Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.  Note that this differs from the SRFI 1 analogue because it does not return a useful value.  
+Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.  Note that this differs from the SRFI 1 analogue because it does not return an element of the set.  
 
 </p>
 
 <h3 id="Mappingandfolding">Mapping and folding</h3>
 
-<p><code>(set-map </code><em>proc comparator set</em><code>)</code></p>
+<p><code>(set-map </code><em>comparator proc set</em><code>)</code></p>
 
-<p>Applies <em>proc</em> to each element of <em>set</em> in arbitrary order and returns a newly allocated set, created as if by <code>set</code>, which contains the results of the applications.  For example:</p>
+<p>Applies <em>proc</em> to each element of <em>set</em> in arbitrary order and returns a newly allocated set, created as if by <code>(set </code><em>comparator</em><code>)</code>, which contains the results of the applications.  For example:</p>
 
-<pre>        (set-map string-ci=? symbol-&gt;string (set eq? 'foo 'bar 'baz))
-            =&gt; (set string-ci=? "foo" "bar" "baz")
+<pre>        (set-map string-ci-comparator symbol-&gt;string (set eq? 'foo 'bar 'baz))
+            =&gt; (set string-ci-comparator "foo" "bar" "baz")
 </pre>
+
+<p>Note that, when <em>proc</em> defines a mapping that is not 1:1, some of the mapped objects may be equivalent in the sense of <em>comparator's</em> equality predicate, and in this case duplicate elements are omitted as in the set constructor.  For example:</p>
+
+<pre>
+(set-map (lambda (x) (quotient x 2))
+         integer-comparator
+         (set integer-comparator 1 2 3 4 5))
+ => (set integer-comparator 0 1 2)
+</pre>
+
+<p>If the elements are the same in the sense of <code>eqv?</code>, it is unpredictable which one will be preserved in the result.</p>
 
 <p><code>(set-for-each </code><em>proc set</em><code>)</code></p>
 
@@ -275,49 +289,47 @@ Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate
 
 Returns a newly allocated set containing the elements of <em>set</em>, and using the same comparator.
 
-</p>
-
-<p><code>(set-&gt;list </code><em>set</em><code>)</code></p><p>
+</p><p><code>(set-&gt;list </code><em>set</em><code>)</code></p><p>
 
 Returns a newly allocated list containing the members of <em>set</em> in unspecified order.
 
 </p><p><code>(list-&gt;set </code><em>comparator list</em><code>)</code></p><p>
 
-Returns a newly allocated set, created as if by <code>set</code> using <em>comparator</em>, that contains the elements of <em>list</em>.
+Returns a newly allocated set, created as if by <code>set</code> using <em>comparator</em>, that contains the elements of <em>list</em>.  Duplicate elements (in the sense of the equality predicate) are omitted.
 
 </p><p><code>(list-&gt;set! </code><em>set list</em><code>)</code></p><p>
 
-Returns a set that contains the elements of both <em>set</em> and <em>list</em>.
+Returns a set that contains the elements of both <em>set</em> and <em>list</em>.  Duplicate elements (in the sense of the equality predicate) are omitted.
 
 </p><h3 id="Subsets">Subsets</h3>
 
 <p>Note: The following three predicates do not obey the trichotomy law and therefore do not constitute a total order on sets.</p>
 
-<p><code>(set=? </code><em>set</em> ...<code>)</code>
+<p><code>(set=? </code><em>set<sub>1</sub> set<sub>2</sub></em> ...<code>)</code>
 
 </p><p>
 
 Returns <code>#t</code> if each <em>set</em> contains the same elements.
 
-</p><p><code>(set&lt;? </code><em>set</em> ...<code>)</code>
+</p><p><code>(set&lt;? </code><em>set<sub>1</sub> set<sub>2</sub></em> ...<code>)</code>
 
 </p><p>
 
 Returns <code>#t</code> if each <em>set</em> other than the last is a proper subset of the following <em>set</em>, and <code>#f</code> otherwise.
 
-</p><p><code>(set&gt;? </code><em>set</em> ...<code>)</code>
+</p><p><code>(set&gt;? </code><em>set<sub>1</sub> set<sub>2</sub></em> ...<code>)</code>
 
 </p><p>
 
 Returns <code>#t</code> if each <em>set</em> other than the last is a proper superset of the following <em>set</em>, and <code>#f</code> otherwise.
 
-</p><p><code>(set&lt;=? </code><em>set</em> ...<code>)</code>
+</p><p><code>(set&lt;=? </code><em>set<sub>1</sub> set<sub>2</sub></em> ...<code>)</code>
 
 </p><p>
 
 Returns <code>#t</code> if each <em>set</em> other than the last is a subset of the following <em>set</em>, and <code>#f</code> otherwise.
 
-</p><p><code>(set&gt;=? </code><em>set</em> ...<code>)</code>
+</p><p><code>(set&gt;=? </code><em>set<sub>1</sub> set<sub>2</sub></em> ...<code>)</code>
 
 </p><p>
 
@@ -333,7 +345,7 @@ Returns <code>#t</code> if each <em>set</em> other than the last is a superset o
 
 </p><p><code>(set-xor </code><em>set<sub>1</sub> set<sub>2</sub></em><code>)</code></p><p>
 
-Returns a newly allocated set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.
+Return a newly allocated set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.
 
 </p><p><code>(set-union! </code><em>set<sub>1</sub> set<sub>2</sub></em> ...<code>)</code>
 
@@ -390,7 +402,7 @@ Linear update procedures that return a bag with the same elements as <em>bag</em
 
 </p><p><code>(bag-&gt;set </code><em>bag</em><code>)</code></p><p><code>(set-&gt;bag </code><em>set</em><code>)</code></p><p><code>(set-&gt;bag! </code><em>bag set</em><code>)</code></p><p>
 
-The <code>bag-&gt;set</code> procedure returns a newly allocated set containing the unique elements of <em>bag</em>.  The <code>set-&gt;bag</code> procedure returns a newly allocated bag containing the elements of <em>set</em>.  The <code>set-&gt;bag!</code> procedure returns a bag containing the elements of both <em>bag</em> and <em>set</em>.  In all cases, the comparator of the result is the same as the comparator of the argument or arguments.
+The <code>bag-&gt;set</code> procedure returns a newly allocated set containing the unique elements (in the sense of the equality predicate) of <em>bag</em>.  The <code>set-&gt;bag</code> procedure returns a newly allocated bag containing the elements of <em>set</em>.  The <code>set-&gt;bag!</code> procedure returns a bag containing the elements of both <em>bag</em> and <em>set</em>.  In all cases, the comparator of the result is the same as the comparator of the argument or arguments.
 
 </p><p><code>(bag-&gt;alist </code><em>bag</em><code>)</code></p><p><code>(alist-&gt;bag </code><em>alist comparator</em><code>)</code></p><p><code>(alist-&gt;bag! </code><em>bag alist</em><code>)</code></p><p>
 
