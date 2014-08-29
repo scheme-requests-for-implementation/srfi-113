@@ -37,10 +37,11 @@ subscribe to the list.  You can access previous messages via
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.4">2013/12/04</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.5">2014/03/31</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.6">2014/08/15</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.7">2014/08/19</a></li>
-      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.8">2014/08/22</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.8">2014/08/19</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.9">2014/08/22</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.10">2014/08/22</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.11">2014/08/29</a></li>
     </ul>
-
 
 <h1>Abstract</h1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.
 
@@ -113,14 +114,15 @@ subscribe to the list.  You can access previous messages via
 
 <ul><li><p><a href="#Constructors">Constructors</a>: <code>set</code>, <code>set-contains?</code>, <code>set-unfold</code></p>
 </li><li><p><a href="#Predicates">Predicates</a>: <code>set?</code>, <code>set-empty?</code>, <code>set-disjoint?</code></p>
-</li><li><p><a href="#Accessors">Accessors</a>: <code>set-member</code>, <code>set-comparator</code></p>
+</li><li><p><a href="#Accessors">Accessors</a>: <code>set-member</code>, <code>set-element-comparator</code></p>
 </li><li><p><a href="#Updaters">Updaters</a>: <code>set-adjoin</code>, <code>set-adjoin!</code>, <code>set-replace</code>, <code>set-replace!</code>, <code>set-delete</code>, <code>set-delete!</code>, <code>set-delete-all</code>, <code>set-delete-all!</code>, <code>set-search!</code></p>
 </li><li><p><a href="#Thewholeset">The whole set</a>: <code>set-size</code>, <code>set-find</code>, <code>set-count</code>, <code>set-any?</code>, <code>set-every?</code></p>
 </li><li><p><a href="#Mappingandfolding">Mapping and folding</a>: <code>set-map</code>, <code>set-for-each</code>, <code>set-fold</code>, <code>set-filter</code>, <code>set-filter!</code>, <code>set-remove</code>, <code>set-remove!</code>, <code>set-partition</code>, <code>set-partition!</code></p>
 </li><li><p><a href="#Copyingandconversion">Copying and conversion</a>: <code>set-copy</code>, <code>set-&gt;list</code>, <code>list-&gt;set</code>, <code>list-&gt;set!</code></p>
 </li><li><p><a href="#Subsets">Subsets</a>: <code>set=?</code>, <code>set&lt;?</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code></p>
-</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code></p>
-</li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
+</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>set-union</code>, <code>set-intersection</code>, <code>set-difference</code>, <code>set-xor</code>, <code>set-union!</code>, <code>set-intersection!</code>, <code>set-difference!</code>, <code>set-xor!</code>, <code>set-cartesian-product</code>, <code>set-powerset</code></p>
+</li><li><p><a href="#Additionalbagprocedures">Additional bag procedures</a>: <code>bag-sum</code>, <code>bag-sum!</code>, <code>bag-product</code>, <code>bag-product!</code>, <code>bag-element-count</code>, <code>bag-for-each-unique</code>, <code>bag-fold-unique</code>, <code>bag-increment!</code>, <code>bag-decrement!</code>, <code>bag-&gt;set</code>, <code>set-&gt;bag</code>, <code>set-&gt;bag!</code></p>
+</li><li><p><a href="#Comparators">Comparators</a>: <code>set-comparator</code>, <code>bag-comparator</code></p>
 </li>
 
 </ul>
@@ -131,7 +133,7 @@ subscribe to the list.  You can access previous messages via
 
 <p><code>(set </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
-<p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator.  The <em>elements</em> are used to initialize the set.</p>
+<p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator, which is used to control and distinguish the elements of the set.  The <em>elements</em> are used to initialize the set.</p>
 
 <p><code>(set-unfold </code><em>comparator stop? mapper successor seed</em><code>)</code></p>
 
@@ -161,9 +163,9 @@ subscribe to the list.  You can access previous messages via
 
 <p>Returns the element of <em>set</em> that is equal, in the sense of <em>set's</em> equality predicate, to <em>element</em>.  If <em>element</em> is not a member of <em>set</em>, <em>default</em> is returned.</p>
 
-<p><code>(set-comparator </code><em>set</em><code>)</code></p>
+<p><code>(set-element-comparator </code><em>set</em><code>)</code></p>
 
-<p>Returns the comparator of <em>set</em>.</p>
+<p>Returns the comparator used to compare the elements of <em>set</em>.</p>
 
 <h3 id="Updaters">Updaters</h3>
 
@@ -358,6 +360,13 @@ Return a newly allocated set that is the union, intersection, asymmetric differe
 
 <p>Linear update procedures returning a set that is the union, intersection, asymmetric difference, or symmetric difference of the <em>sets</em>.  Asymmetric difference is extended to more than two sets by taking the difference between the first set and the union of the others.  Symmetric difference is not extended beyond two sets.  Elements in the result set are drawn from the first set in which they appear.</p>
 
+<p><code>(set-cartesian-product </code><em>set<sub>1</sub> set<sub>2</sub></em> ... <code>)</code></p><p>
+
+Return the cartesian product of the <em>sets</em>.  The result is a set of lists constituting every possible combination of elements of the arguments, where the first element of each list is drawn from <em>set<sub>1</sub></em>, the second element from <em>set<sub>2</sub></em>, and so on.  Note that the lists may share storage, so mutating them is an error even when they are removed from the result set.  To get a set of sets instead, use <code>set-map</code> with the comparator <code>set-comparator</code> and the mapping procedure <code>list-&gt;set</code>.  Note that there is no linear-update version of this procedure.</p>
+
+<p><code>(set-power-set </code><em>set</em><code>)</code></p><p>
+
+Return the power set of <em>set</em>.  The result is a set of sets constituting every possible combination of the elements of <em>set</em>, from the null set to the set of all elements.  The running time of this procedure is O(2<sup>n</sup>), so beware of applying it to large sets.  Note that there is no linear-update version of this procedure.</p>
 
 <h2 id="Bagprocedures">Bag procedures</h2><p>
 
@@ -365,7 +374,7 @@ Bags are like sets, but can contain the same object more than once.  However, if
 
 </p><p>
 
-The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
+The procedures for creating and manipulating bags are the same as those for sets, except that <code>set</code> is replaced by <code>bag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  (The bag version of <code>set-power-set</code> is <code>bag-power-bag</code>.)  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
 </p>
 
 <p>The <code>bag-union</code>, <code>bag-intersection</code>, <code>bag-difference</code>, and <code>bag-xor</code> procedures (and their linear update analogues) behave as follows when both bags contain elements that are equal in the sense of the bags' comparator:</p>
@@ -381,7 +390,23 @@ The procedures for creating and manipulating bags are the same as those for sets
 
 <h3 id="Additionalbagprocedures">Additional bag procedures</h3>
 
-<p><code>(bag-unique-size </code><em>bag</em><code>)</code></p><p>
+<p><code>(bag-sum </code><em>set<sub>1</sub> set<sub>2</sub></em> ... <code>)</code></p>
+
+<p><code>(bag-sum! </code><em>bag<sub>1</sub> bag<sub>2</sub></em> ... <code>)</code></p><p>
+
+The <code>bag-sum</code> procedure returns a newly allocated bag containing all the unique elements in all the <em>bags</em>, such that the count of each unique element in the result is equal to the sum of the counts of that element in the arguments.  It differs from <code>bag-union</code> by treating identical elements as potentially distinct rather than attempting to match them up.
+
+</p><p>The <code>bag-sum!</code> procedure is equivalent except that it is linear-update.
+
+<p><code>(bag-product </code><em>n bag</em><code>)</code></p>
+
+<p><code>(bag-product! </code><em>n bag</em><code>)</code></p>
+
+The <code>bag-product</code> procedure returns a newly allocated bag containing all the unique elements in <em>bag</em>, where the count of each unique element in the bag is equal to the count of that element in <code>bag</code> multiplied by <em>n</em>.
+
+</p><p>The <code>bag-product!</code> procedure is equivalent except that it is linear-update.
+
+</p><p><code>(bag-unique-size </code><em>bag</em><code>)</code></p><p>
 
 Returns the number of unique elements of <em>bag</em>.
 
@@ -405,11 +430,19 @@ Linear update procedures that return a bag with the same elements as <em>bag</em
 
 The <code>bag-&gt;set</code> procedure returns a newly allocated set containing the unique elements (in the sense of the equality predicate) of <em>bag</em>.  The <code>set-&gt;bag</code> procedure returns a newly allocated bag containing the elements of <em>set</em>.  The <code>set-&gt;bag!</code> procedure returns a bag containing the elements of both <em>bag</em> and <em>set</em>.  In all cases, the comparator of the result is the same as the comparator of the argument or arguments.
 
-</p><p><code>(bag-&gt;alist </code><em>bag</em><code>)</code></p><p><code>(alist-&gt;bag </code><em>alist comparator</em><code>)</code></p><p><code>(alist-&gt;bag! </code><em>bag alist</em><code>)</code></p><p>
+</p><p><code>(bag-&gt;alist </code><em>bag</em><code>)</code></p><p><code>(alist-&gt;bag </code><em>comparator alist</em><code>)</code></p><p>
 
-The <code>bag-&gt;alist</code> procedure returns a newly allocated alist whose keys are the unique elements of <em>bag</em> and whose values are the number of occurrences of each element.  The <code>alist-&gt;bag</code> returning a newly allocated bag based on <em>comparator</em>, where the keys of <em>alist</em> specify the elements and the corresponding values of <em>alist</em> specify how many times they occur.  The <code>alist-&gt;bag!</code> procedure returns a bag that contains the elements of <em>bag</em> and additional elements from <em>alist</em>.</p>
+The <code>bag-&gt;alist</code> procedure returns a newly allocated alist whose keys are the unique elements of <em>bag</em> and whose values are the number of occurrences of each element.  The <code>alist-&gt;bag</code> returning a newly allocated bag based on <em>comparator</em>, where the keys of <em>alist</em> specify the elements and the corresponding values of <em>alist</em> specify how many times they occur.</p>
 
-<h1>Implementation</h1>
+<h2 id="Comparators">Comparators</h2><p>
+
+The following comparators are used to compare sets or bags, and allow sets of sets, bags of sets, etc.
+
+</p><p><code>set-comparator</code></p><p><code>bag-comparator</code></p><p>
+
+Note that these comparators do not provide comparison procedures, as there is no ordering between sets or bags.  It is an error to compare sets or bags with different element comparators.
+
+</p><h1>Implementation</h1>
 
 <p>The implementation places the identifiers defined above into the <code>sets</code> library.</p>
 
