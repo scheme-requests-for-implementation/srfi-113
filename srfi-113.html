@@ -41,6 +41,7 @@ subscribe to the list.  You can access previous messages via
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.9">2014/08/22</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.10">2014/08/22</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.11">2014/08/29</a></li>
+      <li>Revised: <a href="http://srfi.schemers.org/cgi-bin/viewcvs.cgi/*checkout*/srfi/srfi-113/srfi-113.html?rev=1.12">2014/11/16</a></li>
     </ul>
 
 <h1>Abstract</h1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.
@@ -447,6 +448,12 @@ Note that these comparators do not provide comparison procedures, as there is no
 <p>The implementation places the identifiers defined above into the <code>sets</code> library.</p>
 
 <p>Sets and bags are implemented as a thin veneer over hashtables.</p>
+
+<p>The implementation registers <code>set-comparator</code> and
+<code>bag-comparator</code> with SRFI 114's default comparator, assuming
+the sample implementation of SRFI 114 is being used.  Scheme implementers
+who provide their own implementations of SRFI 114 must change this part
+of the code.</p>
 
 <p>The <a href="http://srfi.schemers.org/srfi-113/sets.tar.gz">sample implementation</a> contains the following files:</p>
 
