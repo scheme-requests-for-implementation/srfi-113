@@ -19,7 +19,7 @@ This SRFI is currently in ``draft'' status.
 
 To see an explanation of
 each status that a SRFI can hold, see <a
-href="http://srfi.schemers.org/srfi-process.html">here</a>.
+href="http://srfi.speechcode.com/srfi-process.html">here</a>.
 
 To provide input on this SRFI, please
 <a href="mailto:srfi minus 113 at srfi dot schemers dot org">mail to
@@ -48,17 +48,17 @@ subscribe to the list.  You can access previous messages via
 
 <h1>Rationale</h1>
 
-<p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.  <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> also provides a list-based implementation of sets.</p>
+<p>Sets are a standard part of the libraries of many high-level programming languages, including Smalltalk, <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html">Java</a>, and <a href="http://www.cplusplus.com/reference/set/set/">C++</a>.  <a href="http://docs.racket-lang.org/reference/sets.html">Racket</a> provides general sets similar to those of this proposal, though with fewer procedures, and there is a Chicken egg called <code>sets</code> (unfortunately undocumented), which provides a minimal set of procedures.  <a href="http://srfi.speechcode.com/srfi-1/srfi-1.html">SRFI 1</a> also provides a list-based implementation of sets.</p>
 
 <p>Bags are useful for counting anything from a fixed set of possibilities, e.g. the number of each type of error in a log file or the number of uses of each word in a lexicon drawn from a body of documents.  Although other data structures can serve the same purpose, using bags clearly expresses the programmer's intent and allows for optimization.</p>
 
 <p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in a collection, because <code>length</code> implies order.</p>
 
-<p>It's possible to use the general sets of this SRFI to contain characters, but the use of <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead.  The names and facilities in this SRFI are harmonized with SRFI 14, except that SRFI 14 does not contain analogues of the <code>set-search!</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code>, <code>set-remove</code>, or <code>set-partition</code> procedures.</p>
+<p>It's possible to use the general sets of this SRFI to contain characters, but the use of <a href="http://srfi.speechcode.com/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead.  The names and facilities in this SRFI are harmonized with SRFI 14, except that SRFI 14 does not contain analogues of the <code>set-search!</code>, <code>set&gt;?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code>, <code>set-remove</code>, or <code>set-partition</code> procedures.</p>
 
-<p>Sets and bags do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
+<p>Sets and bags do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.speechcode.com/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
 
-<p>The interface to general sets and bags depends on <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparators, despite that SRFI having a higher number than this one for <a href="http://www.catb.org/jargon/html/H/hysterical-reasons.html">hysterical raisins</a>. Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
+<p>The interface to general sets and bags depends on <a href="http://srfi.speechcode.com/srfi-114/srfi-114.html">SRFI 114</a> comparators, despite that SRFI having a higher number than this one for <a href="http://www.catb.org/jargon/html/H/hysterical-reasons.html">hysterical raisins</a>. Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
 
 <h1>Specification</h1>
 
@@ -131,7 +131,7 @@ subscribe to the list.  You can access previous messages via
 
 <p><code>(set </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
-<p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator.  The <em>elements</em> are used to initialize the set.</p>
+<p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.speechcode.com/srfi-114/srfi-114.html">SRFI 114</a> comparator.  The <em>elements</em> are used to initialize the set.</p>
 
 <p><code>(set-unfold </code><em>comparator stop? mapper successor seed</em><code>)</code></p>
 
@@ -415,7 +415,7 @@ The <code>bag-&gt;alist</code> procedure returns a newly allocated alist whose k
 
 <p>Sets and bags are implemented as a thin veneer over hashtables.</p>
 
-<p>The <a href="http://srfi.schemers.org/srfi-113/sets.tar.gz">sample implementation</a> contains the following files:</p>
+<p>The <a href="http://srfi.speechcode.com/srfi-113/sets.tar.gz">sample implementation</a> contains the following files:</p>
 
 <ul><li><code>sets-impl.scm</code> – implementation of general sets and bags</li>
 <li><code>sets.sld</code> – an R7RS library named <code>(sets)</code></li>
