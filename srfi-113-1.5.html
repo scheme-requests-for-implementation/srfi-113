@@ -19,7 +19,7 @@ This SRFI is currently in ``draft'' status.
 
 To see an explanation of
 each status that a SRFI can hold, see <a
-href="http://srfi.speechcode.com/srfi-process.html">here</a>.
+href="http://srfi.schemers.org/srfi-process.html">here</a>.
 
 To provide input on this SRFI, please
 <a href="mailto:srfi minus 113 at srfi dot schemers dot org">mail to
@@ -54,11 +54,11 @@ subscribe to the list.  You can access previous messages via
 
 <p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in the collection, because <code>length</code> implies order.</p>
 
-<p>Although it's possible to use the general sets of this SRFI to contain characters, the use of <a href="http://srfi.speechcode.com/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead.  The names in this SRFI are harmonized with SRFI 14, except that SRFI 14 does not contain analogues of the <code>set&gt;>?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code>, <code>set-remove</code>, or <code>set-partition</code> procedures.</p>
+<p>Although it's possible to use the general sets of this SRFI to contain characters, the use of <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead.  The names in this SRFI are harmonized with SRFI 14, except that SRFI 14 does not contain analogues of the <code>set&gt;>?</code>, <code>set&lt;=?</code>, <code>set&gt;=?</code>, <code>set-remove</code>, or <code>set-partition</code> procedures.</p>
 
-<p>Sets do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.speechcode.com/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
+<p>Sets do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
 
-<p>The interface to general sets and bags depends on <a href="http://srfi.speechcode.com/srfi-114/srfi-114.html">SRFI 114</a> comparators, despite that SRFI having a higher number than this one (for hysterical raisins). Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
+<p>The interface to general sets and bags depends on <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparators, despite that SRFI having a higher number than this one (for hysterical raisins). Comparators conveniently package the equality predicate of the set with the hash function or comparison procedure needed to implement the set efficiently.</p>
 
 <p>During the discussion of this SRFI, a new expression type <code>enumeration-case</code> similar to <code>case</code> was proposed. It would dispatch based on a member of an enumeration set, with enumeration-specific error checking?  Specifically, an error would be signaled if the cases are not exhaustive, or if any clause datum is not a member of the enumeration set.  Unfortunately, due to phasing problems, <code>enumeration-case</code> would only work with enumerations defined using <code>define-enum</code>, and it would be awkward to implement it with <code>syntax-rules</code> only.  Therefore, it was not included.</p>
 
@@ -122,7 +122,7 @@ subscribe to the list.  You can access previous messages via
 
 <p><code>(set </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
-<p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.speechcode.com/srfi-114/srfi-114.html">SRFI 114</a> comparator.  The <em>elements</em> are used to initialize the set.</p>
+<p>Returns a newly allocated empty set.  The <em>comparator</em> argument is a <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator.  The <em>elements</em> are used to initialize the set.</p>
 
 <p><code>(set-adjoin </code><em>set</em><code> </code><em>element</em> ... <code>)</code></p>
 

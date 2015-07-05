@@ -19,7 +19,7 @@ This SRFI is currently in ``draft'' status.
 
 To see an explanation of
 each status that a SRFI can hold, see <a
-href="http://srfi.speechcode.com/srfi-process.html">here</a>.
+href="http://srfi.schemers.org/srfi-process.html">here</a>.
 
 To provide input on this SRFI, please
 <a href="mailto:srfi minus 113 at srfi dot schemers dot org">mail to
@@ -54,7 +54,7 @@ subscribe to the list.  You can access previous messages via
 <li><p>(resolved)</p></li>
 <li><p>Should we stick to just comparators, or also allow equality predicates?</p></li>
 <li><p>Should we switch to six libraries (sets, bags, integer sets, character sets, enum sets, and set-bag conversion), or stick with a single library?  (This is not about dividing the SRFI itself.)</p></li>
-<li><p>Should we add a cursor API similar to <a href="http://srfi.speechcode.com/srfi-14/srfi-14.html#char-set-cursor">SRFI 14's</a>?</p></li>
+<li><p>Should we add a cursor API similar to <a href="http://srfi.schemers.org/srfi-14/srfi-14.html#char-set-cursor">SRFI 14's</a>?</p></li>
 <li><p>Should we add comparators for the various types?</p></li>
 </ol>
 
@@ -65,7 +65,7 @@ subscribe to the list.  You can access previous messages via
 
 <p>Although general sets subsume all other types of sets, providing a few types separately allows for increased implementation efficiency.  In particular, sets whose elements are restricted to non-negative exact integers within a small range are provided.  There are two Chicken eggs that provide integer sets: <a href="http://wiki.call-cc.org/eggref/4/iset#integer-sets"><code>iset</code></a>, which is conceptually similar to the integer sets described here, but using bignums rather than bytevectors; and <a href="http://wiki.call-cc.org/eggref/4/cis"><code>cis</code></a>, which uses lists of integer intervals.</p>
 
-<p>Character sets are already specified by <a href="http://srfi.speechcode.com/srfi-14/srfi-14.html">SRFI 14</a>,  The interface is not as complete as this SRFI, so an overlay of procedures is provided here.</p>
+<p>Character sets are already specified by <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>,  The interface is not as complete as this SRFI, so an overlay of procedures is provided here.</p>
 
 <p>The design of enumeration sets is founded on <a class="ext-link" href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html">R6RS enumerations</a>, but with the addition of reified enumeration types along the lines suggested by <a class="ext-link" href="http://www.r6rs.org/formal-comments/comment-262.txt">R6RS Formal Comment #262</a>.  The prefix <code>enum</code> is used in all cases instead of using both <code>enum</code> and <code>enumeration</code> as R6RS does.  Approximate mappings are shown below.
 </p>
@@ -73,18 +73,18 @@ subscribe to the list.  You can access previous messages via
 <p>Insofar as possible, the names in this SRFI are harmonized with the names used for ordered collections (lists, strings, vectors, and bytevectors) in Scheme.  However, <code>size</code> is used instead of <code>length</code> to express the number of elements in the collection, because <code>length</code> implies order.</p>
 
 
-<p>Sets do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.speechcode.com/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
+<p>Sets do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
 
 <H1>Specification</H1>
 
 <p>The procedures in this SRFI are in the <code>(srfi 113)</code> library (or <code>(srfi :113)</code> on R6RS).  However, the sample implementation currently places them in the <code>(sets)</code> library instead.</p>
 
-<p>Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.  Character sets belong to the type defined by <a href="http://srfi.speechcode.com/srfi-14/srfi-14.html">SRFI 14</a>, but are disjoint from all other types.
+<p>Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.  Character sets belong to the type defined by <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>, but are disjoint from all other types.
 </p>
 
 <p>It is an error for any procedure defined in this SRFI to be invoked on sets or bags with different comparators.</p>
 
-<p>Procedures whose names end with <code>!</code> are linear update procedures in the sense of <a href="http://srfi.speechcode.com/srfi-1/srfi-1.html#LinearUpdateProcedures">SRFI 1</a>.  This means that an implementation may legally implement these procedures as pure, side-effect-free functions, or it may implement them using side effects, depending upon the details of what is the most efficient or simple to implement in terms of the underlying representation.  Furthermore, if the implementations of all linear update procedures on a given type of set are pure, then the procedures which are said to return new sets are not required to actually allocate them: they may return already existing objects.  See SRFI 1 for the rationale.</p>
+<p>Procedures whose names end with <code>!</code> are linear update procedures in the sense of <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#LinearUpdateProcedures">SRFI 1</a>.  This means that an implementation may legally implement these procedures as pure, side-effect-free functions, or it may implement them using side effects, depending upon the details of what is the most efficient or simple to implement in terms of the underlying representation.  Furthermore, if the implementations of all linear update procedures on a given type of set are pure, then the procedures which are said to return new sets are not required to actually allocate them: they may return already existing objects.  See SRFI 1 for the rationale.</p>
 
 <h2 id="Setprocedures">Set procedures</h2><h3>Constructors</h3><p><code>(set </code><em>comparator element</em> ...<code>)</code></p><p>
 
@@ -300,7 +300,7 @@ The elements of a character set are characters.  Except as noted below, the proc
 
 <p>There is no <code>char-set-intern!</code> procedure.</p>
 
-<p>The character sets of this SRFI belong to the same type as the character sets of <a href="http://srfi.speechcode.com/srfi-14/srfi-14.html">SRFI 14</a>, at least in implementations that support both SRFIs.</p>
+<p>The character sets of this SRFI belong to the same type as the character sets of <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>, at least in implementations that support both SRFIs.</p>
 
 <h3>Additional procedures</h3>
 
@@ -444,7 +444,7 @@ Returns a new enumeration set of type <em>enum-type</em>.  Its elements are the 
 <li><code>csets-impl.scm</code> - implementation of character sets</li>
 <li><code>enums-impl.scm</code> - implementation of enums and enum types</li>
 <li><code>count.scm</code> - macros for conveniently looping over bytevectors</li>
-<li><code>srfi-4-shim.scm</code> - a trivial implementation of bytevectors on top of <a href="http://srfi.speechcode.com/srfi-4/srfi-4.html">SRFI 4</a> u8vectors</li>
+<li><code>srfi-4-shim.scm</code> - a trivial implementation of bytevectors on top of <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a> u8vectors</li>
 <li><code>sets.sld</code> - an R7RS library</li>
 <li><code>sets.scm</code> - a Chicken library</li></ul>
 
