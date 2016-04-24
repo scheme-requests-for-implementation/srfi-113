@@ -1266,7 +1266,7 @@
   (let* ((ht (sob-hash-table sob))
          (hash (comparator-hash-function (sob-comparator sob))))
     (sob-fold
-      (lambda (element result) (+ (hash element) (* result 33)))
+      (lambda (element result) (+ (hash element) result))
       5381
       sob)))
 
