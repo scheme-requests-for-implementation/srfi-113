@@ -1,10 +1,12 @@
 (require-library srfi-69)
+(require-library srfi-60)
 (module sets ()
   (import scheme)
   (import (only chicken
     include define-record-type define-record-printer 
     case-lambda call/cc when error use))
   (import (except srfi-69 hash-table-for-each))
+  (import (only srfi-60 logxor))
   (use comparators)
 
   (export set set-unfold)
