@@ -43,5 +43,5 @@
           bag-increment! bag-decrement! bag->set set->bag set->bag!
           bag->alist alist->bag)
 
-  (include "sets-impl.scm")
+  (include "sets/sets-impl.scm")
 )
