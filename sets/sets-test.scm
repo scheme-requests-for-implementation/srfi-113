@@ -1,6 +1,7 @@
 (use test)
 (use srfi-113)
 (use srfi-128)
+(load "../sets/comparators-shim.scm")
 
 (test-group "sets"
 (define (big x) (> x 5))
@@ -587,7 +588,7 @@
   (test-assert (not (=? bag-comparator aa bb)))
   (test-assert (=? bag-comparator aa (bag-copy aa)))
   (test-error (<? bag-comparator aa bb))
-  (test-assert (not (=? default-comparator a aa)))
+  (test-assert (not (=? (make-default-comparator) a aa)))
 ) ; end comparators
 
 ) ; end r7rs-sets
