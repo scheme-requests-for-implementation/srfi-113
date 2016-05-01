@@ -1,6 +1,6 @@
 (use test)
 (use sets)
-(use comparators)
+(use srfi-128)
 
 (test-group "sets"
 (define (big x) (> x 5))
