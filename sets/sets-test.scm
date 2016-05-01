@@ -1,5 +1,5 @@
 (use test)
-(use sets)
+(use srfi-113)
 (use srfi-128)
 
 (test-group "sets"
