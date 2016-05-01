@@ -37,7 +37,6 @@
           bag-union! bag-intersection! bag-difference! bag-xor!)
   (export bag-comparator)
 
-
   (export bag-sum bag-sum! bag-product bag-product!
           bag-unique-size bag-element-count bag-for-each-unique bag-fold-unique
           bag-increment! bag-decrement! bag->set set->bag set->bag!
