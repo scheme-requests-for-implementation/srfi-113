@@ -1,0 +1,3 @@
+(repo git "git://github.com/scheme-requests-for-implementation/srfi-113.git")
+(uri targz "https://codeload.github.com/scheme-requests-for-implementation/srfi-113/tar.gz/CHICKEN-{egg-release}")
+(release "0.1")

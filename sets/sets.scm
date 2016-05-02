@@ -1,11 +1,11 @@
 (require-library srfi-69)
-(module sets ()
+(module srfi-113 ()
   (import scheme)
   (import (only chicken
-    include define-record-type define-record-printer 
+    include define-record-type define-record-printer
     case-lambda call/cc when error use))
   (import (except srfi-69 hash-table-for-each))
-  (use comparators)
+  (use srfi-128)
 
   (export set set-unfold)
   (export set? set-contains? set-empty? set-disjoint?)
@@ -21,7 +21,7 @@
   (export set-union set-intersection set-difference set-xor
           set-union! set-intersection! set-difference! set-xor!)
   (export set-comparator)
-  
+
   (export bag bag-unfold)
   (export bag? bag-contains? bag-empty? bag-disjoint?)
   (export bag-member bag-element-comparator)
@@ -36,12 +36,11 @@
   (export bag-union bag-intersection bag-difference bag-xor
           bag-union! bag-intersection! bag-difference! bag-xor!)
   (export bag-comparator)
-  
-  
+
   (export bag-sum bag-sum! bag-product bag-product!
           bag-unique-size bag-element-count bag-for-each-unique bag-fold-unique
           bag-increment! bag-decrement! bag->set set->bag set->bag!
           bag->alist alist->bag)
 
-  (include "sets-impl.scm")
+  (include "sets/sets-impl.scm")
 )
