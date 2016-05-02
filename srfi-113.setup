@@ -1,9 +1,12 @@
 ;; -*- Hen -*-
 
-(compile -O3 -d0 -s sets/sets.scm -j srfi-113 -o srfi-113.so)
+(define (dynld-name fn)
+  (make-pathname #f fn ##sys#load-dynamic-extension))
+
+(compile -O3 -d0 -s -J sets/sets.scm -o srfi-113.so)
 (compile -O2 -d0 -s srfi-113.import.scm)
 
 (install-extension
  'srfi-113
- '("srfi-113.so" "srfi-113.import.so")
- '((version "0.1")))
+ `(,(dynld-name "srfi-113") ,(dynld-name "srfi-113.import"))
+ '((version "0.2")))
