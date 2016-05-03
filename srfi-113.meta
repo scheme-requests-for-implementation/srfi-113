@@ -7,7 +7,8 @@
         "srfi-113.setup"
         "srfi-113.meta"
         "srfi-113.release-info"
-        "LICENSE")
+        "LICENSE"
+        "README.md")
 
  (license "BSD")
  (category data)
@@ -17,4 +18,4 @@
  (email "cowan@ccil.org")
  (repo "https://github.com/scheme-requests-for-implementation/srfi-113")
  (synopsis "Sets and Bags.")
- (version "0.1"))
+ (version "0.2"))
