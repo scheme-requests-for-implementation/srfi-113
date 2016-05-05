@@ -1,5 +1,4 @@
-(repo git "git://github.com/scheme-requests-for-implementation/srfi-113.git")
-(uri targz "https://codeload.github.com/scheme-requests-for-implementation/srfi-113/tar.gz/CHICKEN-{egg-release}")
+(uri meta-files "https://raw.githubusercontent.com/ThatGeoGuy/{egg-name}/CHICKEN-{egg-release}/{egg-name}.meta")
 (release "0.1")
 (release "0.2")
-(release "0.3")
+(release "0.3rc1")
