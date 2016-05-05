@@ -2,3 +2,4 @@
 (uri targz "https://codeload.github.com/scheme-requests-for-implementation/srfi-113/tar.gz/CHICKEN-{egg-release}")
 (release "0.1")
 (release "0.2")
+(release "0.3")
