@@ -15,6 +15,7 @@ Sets and bags
 John Cowan
 
 <p>
+<h1>Status</h1>
 This SRFI is currently in ``final'' status.
 
 To see an explanation of
@@ -50,7 +51,18 @@ the archive of the mailing list</a>.
       <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.13.html">2014/11/28</a></li>
       <li>Final: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.14.html">2014/11/29</a></li>
     </ul>
-
+<p><b>Post-finalization note</b>:  Because SRFI 114 has been deprecated
+        by SRFI 128, it is recommended that implementers make use of
+        SRFI 128 rather than SRFI 114 comparators where comparators are
+        specified in this SRFI.  Specifically, the procedures <code>set</code>,
+        <code>bag</code>, <code>set-unfold</code>, <code>bag-unfold</code>, <code>set-map</code>, <code>list->set</code>,
+        <code>list->bag</code>, and <code>alist->bag</code>, should accept SRFI 128 rather
+        than SRFI 114 comparators as arguments.  By the same token, the
+        results of <code>set-element-comparator</code> and <code>bag-element-comparator</code>,
+        as well as the values of <code>set-comparator</code> and <code>bag-comparator</code>,
+        should be SRFI 128 comparators.  The sample implementation has
+        been updated to depend on SRFI 128 rather than SRFI 114.
+</p>
 <h1>Abstract</h1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.
 
 </p>
