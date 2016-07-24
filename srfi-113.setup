@@ -9,4 +9,4 @@
 (install-extension
  'srfi-113
  `(,(dynld-name "srfi-113") ,(dynld-name "srfi-113.import"))
- '((version "0.3")))
+ '((version "0.4")))
