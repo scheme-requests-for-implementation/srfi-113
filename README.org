@@ -15,12 +15,10 @@ Thank you.
 
 [[mailto:srfi-editors@srfi.schemers.org][The SRFI Editors]]
 
-* SRFI 113 - Sets and Bags
+* Implementation
 
-This repository hosts a reference implementation of SRFI 113 - Sets
-and Bags.  The full documentation for this SRFI can be found on the
-[[http://srfi.schemers.org/srfi-113/][SRFI Document Reference]].  The repository hosts a complete
-implementation of the SRFI, running on [[http://call-cc.org][CHICKEN]] Scheme.
+The repository hosts a complete implementation of the SRFI, running on
+[[http://call-cc.org][CHICKEN]] Scheme.
 
 ** File Description
 
