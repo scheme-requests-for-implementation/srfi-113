@@ -5,6 +5,6 @@
 (release "0.3")
 
 (repo git "git://github.com/ThatGeoGuy/srfi-113.git")
-(uri targz "https://codeload.github.com/scheme-requests-for-implementation/{egg-name}/tar.gz/CHICKEN-{egg-release}" whole-repo)
+(uri targz "https://codeload.github.com/ThatGeoGuy/{egg-name}/tar.gz/CHICKEN-{egg-release}" whole-repo)
 (release "0.1" whole-repo)
 (release "0.2" whole-repo)
