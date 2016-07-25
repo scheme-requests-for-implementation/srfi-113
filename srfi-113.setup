@@ -3,7 +3,7 @@
 (define (dynld-name fn)
   (make-pathname #f fn ##sys#load-dynamic-extension))
 
-(compile -O3 -d0 -s -J sets/sets.scm -o srfi-113.so)
+(compile -O3 -d0 -s -J sets/sets.scm -o ,(dynld-name "srfi-113"))
 (compile -O2 -d0 -s srfi-113.import.scm)
 
 (install-extension
