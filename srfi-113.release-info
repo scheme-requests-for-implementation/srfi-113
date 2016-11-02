@@ -1,5 +1,6 @@
 (uri meta-file
      "https://raw.githubusercontent.com/ThatGeoGuy/{egg-name}/CHICKEN-{egg-release}/{egg-name}.meta")
+(release "0.7")
 (release "0.6")
 (release "0.5")
 (release "0.4")

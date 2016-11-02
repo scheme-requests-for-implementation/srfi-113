@@ -601,7 +601,7 @@
 ;; because each instance of an element in a bag will be treated identically
 ;; anyway; we insert them all at once with sob-increment!.
 
-(define (sob-map proc comparator sob)
+(define (sob-map comparator proc sob)
   (let ((result (make-sob comparator (sob-multi? sob))))
     (hash-table-for-each
       (lambda (key value) (sob-increment! result (proc key) value))
@@ -753,7 +753,7 @@
 
 ;; Convert a list to a sob.  Probably could be done using unfold, but
 ;; since sobs are mutable anyway, it's just as easy to add the elements
-;; by side effect.  
+;; by side effect.
 
 (define (list->sob! sob list)
   (for-each (lambda (elem) (sob-increment! sob elem 1)) list)
@@ -1126,7 +1126,7 @@
 ;; For xor exactly two arguments are required, so the above structures are
 ;; not necessary.  This version accepts a result sob and computes the
 ;; absolute difference between the counts in the first sob and the
-;; corresponding counts in the second.  
+;; corresponding counts in the second.
 
 ;; We start by copying the entries in the second sob but not the first
 ;; into the first.  Then we scan the first sob, computing the absolute
