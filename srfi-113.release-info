@@ -1,10 +1,12 @@
 (uri meta-file
-     "https://raw.githubusercontent.com/scheme-requests-for-implementation/{egg-name}/CHICKEN-{egg-release}/{egg-name}.meta")
+     "https://raw.githubusercontent.com/ThatGeoGuy/{egg-name}/CHICKEN-{egg-release}/{egg-name}.meta")
+(release "0.7")
+(release "0.6")
 (release "0.5")
 (release "0.4")
 (release "0.3")
 
-(repo git "git://github.com/scheme-requests-for-implementation/srfi-113.git")
-(uri targz "https://codeload.github.com/scheme-requests-for-implementation/{egg-name}/tar.gz/CHICKEN-{egg-release}" whole-repo)
+(repo git "git://github.com/ThatGeoGuy/srfi-113.git")
+(uri targz "https://codeload.github.com/ThatGeoGuy/{egg-name}/tar.gz/CHICKEN-{egg-release}" whole-repo)
 (release "0.1" whole-repo)
 (release "0.2" whole-repo)
