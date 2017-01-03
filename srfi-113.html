@@ -113,7 +113,7 @@ the archive of the mailing list</a>.
           (set-adjoin! set1 'd)) ; Add d to {a,b,c}.
 </pre>
   
-<p>So clients of these procedures write in a functional style, but must additionally be sure that, when the procedure is called, there are no other live pointers to the potentially-modified character set (hence the term "linear update").</p>
+<p>So clients of these procedures write in a functional style, but must additionally be sure that, when the procedure is called, there are no other live pointers to the potentially-modified set or bag (hence the term "linear update").</p>
 
 <p>There are two benefits to this convention:</p>
 
@@ -121,7 +121,7 @@ the archive of the mailing list</a>.
 
 <li><p>Programmers may nonetheless continue to assume that sets are purely functional data structures: they may be reliably shared without needing to be copied, uniquified, and so forth.</p></li></ul>
 
-<p>In practice, these procedures are most useful for efficiently constructing sets and bags in a side-effecting manner, in some limited local context, before passing the character set outside the local construction scope to be used in a functional manner.</p>
+<p>In practice, these procedures are most useful for efficiently constructing sets and bags in a side-effecting manner, in some limited local context, before passing the set or bag outside the local construction scope to be used in a functional manner.</p>
 
 <p>Scheme provides no assistance in checking the linearity of the potentially side-effected parameters passed to these functions — there's no linear type checker or run-time mechanism for detecting violations.</p>
 
