@@ -52,9 +52,12 @@ the archive of the mailing list</a>.
       <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.12.html">2014/11/16</a></li>
       <li>Revised: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.13.html">2014/11/28</a></li>
       <li>Final: <a href="http://srfi.schemers.org/srfi-113/srfi-113-1.14.html">2014/11/29</a></li>
-      <li>Revised to fix errata: 2016/5/14 (Add post-finalization note.)</li>
-      <li>Revised to fix errata: 2016/11/29 (Fixed calls to `set-map` and `bag-map`.)
-      <li>Revised to fix errata: 2017/1/3 (Replaced references to "character set" with "set or bag.")</li>
+      <li>Revised to fix errata:
+	<ul>
+	  <li>2016/5/14 (Add post-finalization note.)</li>
+	  <li>2016/11/29 (Fixed calls to `set-map` and `bag-map`.)</li>
+	  <li>2017/1/3 (Replaced references to "character set" with "set or bag.")</li>
+	  <li>2018/7/3 (Fixed wording error about total orders.)</li></ul></li>
     </ul>
 <p><b>Post-finalization note 1</b>: Because SRFI 114 has been deprecated
         by SRFI 128, it is recommended that implementers make use of
@@ -336,7 +339,12 @@ Returns a set that contains the elements of both <em>set</em> and <em>list</em>.
 
 </p><h3 id="Subsets">Subsets</h3>
 
-<p>Note: The following three predicates do not obey the trichotomy law and therefore do not constitute a total order on sets.</p>
+<p>
+  Note: None of these predicates produces a total order on
+  sets.  In particular, <code>set=?</code>,
+  <code>set&lt;?</code>, and <code>set&gt;?</code> do not obey
+  the trichotomy law.
+</p>
 
 <p><code>(set=? </code><em>set<sub>1</sub> set<sub>2</sub></em> ...<code>)</code>
 
