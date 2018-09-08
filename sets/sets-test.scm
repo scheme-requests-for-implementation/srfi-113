@@ -108,6 +108,7 @@
   (define other-set2 (set number-comparator 1 2))
   (define set3 (set number-comparator 1 2 3))
   (define set4 (set number-comparator 1 2 3 4))
+  (define sety (set number-comparator 1 2 4 5))
   (define setx (set number-comparator 10 20 30 40))
   (test-assert (set=? set2 other-set2))
   (test-assert (not (set=? set2 set3)))
@@ -120,6 +121,14 @@
   (test-assert (not (set>? set2 other-set2)))
   (test-assert (set>=? set3 other-set2 set2))
   (test-assert (not (set>=? other-set2 set3 set2)))
+  (test-assert (not (set<? set2 setx)))
+  (test-assert (not (set<=? set2 setx)))
+  (test-assert (not (set>? set2 setx)))
+  (test-assert (not (set>=? set2 setx)))
+  (test-assert (not (set<?  set3 sety)))
+  (test-assert (not (set<=? set3 sety)))
+  (test-assert (not (set>?  set3 sety)))
+  (test-assert (not (set>=? set3 sety)))
 ) ; end sets/subsets
 
 (test-group "sets/ops"
@@ -361,6 +370,7 @@
   (define bag3 (bag number-comparator 1 2 3))
   (define bag4 (bag number-comparator 1 2 3 4))
   (define bagx (bag number-comparator 10 20 30 40))
+  (define bagy (bag number-comparator 10 20 20 30 40))
   (test-assert (bag=? bag2 other-bag2))
   (test-assert (not (bag=? bag2 bag3)))
   (test-assert (not (bag=? bag2 bag3 other-bag2)))
@@ -372,6 +382,14 @@
   (test-assert (not (bag>? bag2 other-bag2)))
   (test-assert (bag>=? bag3 other-bag2 bag2))
   (test-assert (not (bag>=? other-bag2 bag3 bag2)))
+  (test-assert (bag<=? bagx bagy))
+  (test-assert (not (bag<=? bagy bagx)))
+  (test-assert (bag<? bagx bagy))
+  (test-assert (not (bag<? bagy bagx)))
+  (test-assert (bag>=? bagy bagx))
+  (test-assert (not (bag<=? bagx bagy)))
+  (test-assert (bag>? bagy bagx))
+  (test-assert (not (bag<? bagx bagy)))
 ) ; end bags/subbags
 
 (test-group "bags/multi"
