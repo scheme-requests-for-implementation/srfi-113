@@ -853,28 +853,6 @@
           ht1))
       #t)))
 
-(define sob>?
-  (case-lambda
-    ((sob) #t)
-    ((sob1 sob2) (dyadic-sob>? sob1 sob2))
-    ((sob1 sob2 . sobs)
-     (and (dyadic-sob>? sob1 sob2)
-          (apply sob>? sob2 sobs)))))
-
-(define (set>? . sets)
-  (check-all-sets sets)
-  (apply sob>? sets))
-
-(define (bag>? . bags)
-  (check-all-bags bags)
-  (apply sob>? bags))
-
-;; > is the negation of <=.  Note that this is only true at the dyadic
-;; level; we can't just replace sob>? with a negation of sob<=?.
-
-(define (dyadic-sob>? sob1 sob2)
-  (not (dyadic-sob<=? sob1 sob2)))
-
 (define sob<?
   (case-lambda
     ((sob) #t)
@@ -891,10 +869,48 @@
   (check-all-bags bags)
   (apply sob<? bags))
 
-;; < is the inverse of >.  Again, this is only true dyadically.
-
+;; Strict subset test is a bit more involved.  At least one entry in ht1
+;; needs to have smaller value than the entry in ht2.
 (define (dyadic-sob<? sob1 sob2)
-  (dyadic-sob>? sob2 sob1))
+  (call/cc
+    (lambda (return)
+      (let ((ht1 (sob-hash-table sob1))
+            (ht2 (sob-hash-table sob2)))
+        (let ((smaller-count
+               (cond 
+                ((< (hash-table-size ht1) (hash-table-size ht2)) 1)
+                ((= (hash-table-size ht1) (hash-table-size ht2)) 0)
+                (else (return #f)))))
+          (hash-table-for-each
+           (lambda (key value)
+             (let ((value2 (hash-table-ref/default ht2 key 0)))
+               (if (not (<= value value2))
+                 (return #f)
+                 (if (< value value2)
+                   (set! smaller-count (+ smaller-count 1))))))
+           ht1)
+          (positive? smaller-count))))))
+
+(define sob>?
+  (case-lambda
+    ((sob) #t)
+    ((sob1 sob2) (dyadic-sob>? sob1 sob2))
+    ((sob1 sob2 . sobs)
+     (and (dyadic-sob>? sob1 sob2)
+          (apply sob>? sob2 sobs)))))
+
+(define (set>? . sets)
+  (check-all-sets sets)
+  (apply sob>? sets))
+
+(define (bag>? . bags)
+  (check-all-bags bags)
+  (apply sob>? bags))
+
+;; > is the inverse of <.  Again, this is only true dyadically.
+
+(define (dyadic-sob>? sob1 sob2)
+  (dyadic-sob<? sob2 sob1))
 
 (define sob>=?
   (case-lambda
@@ -912,10 +928,10 @@
   (check-all-bags bags)
   (apply sob>=? bags))
 
-;; Finally, >= is the negation of <.  Good thing we have tail recursion.
+;; <= is the inverse of >=.  Again, this is only true dyadically.
 
 (define (dyadic-sob>=? sob1 sob2)
-  (not (dyadic-sob<? sob1 sob2)))
+  (dyadic-sob<=? sob2 sob1))
 
 
 ;;; Set theory operations
