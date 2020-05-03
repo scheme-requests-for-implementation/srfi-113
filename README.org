@@ -4,6 +4,8 @@
 
 
 
+keywords: [[https://srfi.schemers.org/?keywords=data-structure][Data Structure]]
+
 This repository hosts [[https://srfi.schemers.org/srfi-113/][SRFI 113]]: Sets and bags, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
 This SRFI is in /final/ status.
