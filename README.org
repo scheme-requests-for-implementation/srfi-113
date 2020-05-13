@@ -4,7 +4,7 @@
 
 
 
-keywords: [[https://srfi.schemers.org/?keywords=data-structure][Data Structure]]
+keywords: [[https://srfi.schemers.org/?keywords=data-structure][Data Structure]], [[https://srfi.schemers.org/?keywords=r7rs-large-red][R7RS Large, Red Edition]]
 
 This repository hosts [[https://srfi.schemers.org/srfi-113/][SRFI 113]]: Sets and bags, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
