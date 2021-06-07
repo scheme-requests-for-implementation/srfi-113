@@ -37,12 +37,11 @@ John Cowan
       <li>Final: <a href="https://srfi.schemers.org/srfi-113/srfi-113-1.14.html">2014-11-29</a></li>
       <li>Revised to fix errata:
 	<ul>
-	  <li>2016-05-14 (Add post-finalization note.)</li>
-	  <li>2016-11-29 (Fixed calls to `set-map` and `bag-map`.)</li>
+	  <li>2016-11-29 (Fixed calls to <code>set-map</code> and <code>bag-map</code>.)</li>
 	  <li>2017-01-03 (Replaced references to "character set" with "set or bag.")</li>
 	  <li>2018-07-03 (Fixed wording error about total orders.)</li></ul></li>
     </ul>
-<p><b>Post-finalization note 1</b>: Because SRFI 114 has been deprecated
+<p id="pfn1"><b>Post-finalization note 1</b> (Added 2016-05-14.): Because SRFI 114 has been deprecated
         by SRFI 128, it is recommended that implementers make use of
         SRFI 128 rather than SRFI 114 comparators where comparators are
         specified in this SRFI.  Specifically, the procedures <code>set</code>,
@@ -54,7 +53,12 @@ John Cowan
         should be SRFI 128 comparators.  The sample implementation has
         been updated to depend on SRFI 128 rather than SRFI 114.
 </p>
-<p><b>Post-finalization note 2</b>: The order of arguments of <code>set-map</code> and <code>set-unfold</code> are not consistent with those of <code>hash-table-map</code> and <code>hash-table-unfold</code> in <a href="https://srfi.schemers.org/srfi-125/">SRFI 125</a>.  Both SRFI 113 and SRFI 125 are going to be part of R7RS large (also known as the <a href="http://trac.sacrideo.us/wg/wiki/RedEdition">Red Edition</a>), and the plan is to make them consistent there, following the order in SRFI 125.  Furthermore, <a href="https://srfi.schemers.org/srfi-146/">SRFI 146</a> (in draft status at the time of this writing) uses the order of SRFI 125.  Since this problem was discovered after SRFI 113 was finalized, and it wasn't an error in the SRFI, it's too late to fix it here.  However, John Cowan, the author, encourages implementers to consider adopting the order of SRFI 125.  Thanks to Marc Nieper-Wißkirchen for reporting this mismatch, and for providing a version of SRFI 113 with the recommended argument order in the implementation of SRFI 146.</p>
+<p id="pfn2"><b>Post-finalization note 2</b>: The order of arguments of <code>set-map</code> and <code>set-unfold</code> are not consistent with those of <code>hash-table-map</code> and <code>hash-table-unfold</code> in <a href="https://srfi.schemers.org/srfi-125/">SRFI 125</a>.  Both SRFI 113 and SRFI 125 are going to be part of R7RS large (also known as the <a href="http://trac.sacrideo.us/wg/wiki/RedEdition">Red Edition</a>), and the plan is to make them consistent there, following the order in SRFI 125.  Furthermore, <a href="https://srfi.schemers.org/srfi-146/">SRFI 146</a> (in draft status at the time of this writing) uses the order of SRFI 125.  Since this problem was discovered after SRFI 113 was finalized, and it wasn't an error in the SRFI, it's too late to fix it here.  However, John Cowan, the author, encourages implementers to consider adopting the order of SRFI 125.  Thanks to Marc Nieper-Wißkirchen for reporting this mismatch, and for providing a version of SRFI 113 with the recommended argument order in the implementation of SRFI 146.</p>
+
+<div id="pfn3"><p><b>Post-finalization note 3</b> (Added 2021-06-03): At the request of the SRFI author, this paragraph has been marked deleted <a href="#deleted-paragraph">where it appears below</a>:</p>
+  <blockquote>The implementation registers set-comparator and bag-comparator with SRFI 114's default comparator, assuming the sample implementation of SRFI 114 is being used. Scheme implementers who provide their own implementations of SRFI 114 must change this part of the code.</blockquote>
+  <p>John says:</p>
+  <blockquote>The words from "assuming" onwards represent the SRFI 114 situation, where registration was not standardized but was made available by the sample implementation, so since PFN 1 (which replaced SRFI 114 with SRFI 128) they are now meaningless anyway.</blockquote></div>
 
 <h1>Abstract</h1><p><em>Sets</em> and <em>bags</em> (also known as multisets) are unordered collections that can contain any Scheme object.  Sets enforce the constraint that no two elements can be the same in the sense of the set's associated <em>equality predicate</em>; bags do not.
 
@@ -461,11 +465,11 @@ Note that these comparators do not provide comparison procedures, as there is no
 
 <p>Sets and bags are implemented as a thin veneer over hashtables.</p>
 
-<p>The implementation registers <code>set-comparator</code> and
+<p id="deleted-paragraph"><del>The implementation registers <code>set-comparator</code> and
 <code>bag-comparator</code> with SRFI 114's default comparator, assuming
 the sample implementation of SRFI 114 is being used.  Scheme implementers
 who provide their own implementations of SRFI 114 must change this part
-of the code.</p>
+of the code.</del> (See <a href="#pfn3">post-finalization note #3</a>.)</p>
 
 <p>The <a href="https://srfi.schemers.org/srfi-113/srfi-113.tgz">sample implementation</a> contains the following files:</p>
 
