@@ -266,8 +266,8 @@ Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate
 <p>Note that, when <em>proc</em> defines a mapping that is not 1:1, some of the mapped objects may be equivalent in the sense of <em>comparator's</em> equality predicate, and in this case duplicate elements are omitted as in the set constructor.  For example:</p>
 
 <pre>
-(set-map (lambda (x) (quotient x 2))
-         integer-comparator
+(set-map integer-comparator
+         (lambda (x) (quotient x 2))
          (set integer-comparator 1 2 3 4 5))
  => (set integer-comparator 0 1 2)
 </pre>
