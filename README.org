@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2013 John Cowan <cowan@ccil.org>
+#
+# SPDX-License-Identifier: MIT
+
 * SRFI 113: Sets and bags
 
 ** by John Cowan

@@ -1,3 +1,7 @@
+;;;; SPDX-FileCopyrightText: 2013 John Cowan <cowan@ccil.org>
+;;;;
+;;;; SPDX-License-Identifier: MIT
+
 ;;; Below are some default comparators provided by SRFI-114,
 ;;; but not SRFI-128, which this SRFI has transitioned to
 ;;; depend on. See the rationale for SRFI-128 as to why it is
