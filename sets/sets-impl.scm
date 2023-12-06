@@ -1,3 +1,7 @@
+;;;; SPDX-FileCopyrightText: 2013 John Cowan <cowan@ccil.org>
+;;;;
+;;;; SPDX-License-Identifier: MIT
+
 ;;;; Implementation of general sets and bags for SRFI 113
 
 ;;; A "sob" object is the representation of both sets and bags.
