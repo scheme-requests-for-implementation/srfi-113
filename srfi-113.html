@@ -46,7 +46,8 @@ John Cowan
 	  <li>2016-11-29 (Fixed calls to <code>set-map</code> and <code>bag-map</code>.)</li>
 	  <li>2017-01-03 (Replaced references to "character set" with "set or bag.")</li>
 	  <li>2018-07-03 (Fixed wording error about total orders.)</li>
-	  <li>2022-02-19 (Fixed order of arguments in example of <code>set-map</code>.)</li></ul></li>
+	  <li>2022-02-19 (Fixed order of arguments in example of <code>set-map</code>.)</li>
+          <li>2025-03-19 (Clarified <a href="#comparator-note">policy on comparison procedures</a>.)</li></ul></li>
     </ul>
 <p id="pfn1"><b>Post-finalization note 1</b> (Added 2016-05-14.): Because SRFI 114 has been deprecated
         by SRFI 128, it is recommended that implementers make use of
@@ -462,9 +463,9 @@ The <code>bag-&gt;alist</code> procedure returns a newly allocated alist whose k
 
 The following comparators are used to compare sets or bags, and allow sets of sets, bags of sets, etc.
 
-</p><p><code>set-comparator</code></p><p><code>bag-comparator</code></p><p>
+</p><p><code>set-comparator</code></p><p><code>bag-comparator</code></p><p id="comparator-note">
 
-Note that these comparators do not provide comparison procedures, as there is no ordering between sets or bags.  It is an error to compare sets or bags with different element comparators.
+Note that these comparators are not requireed to provide comparison procedures, as there is no ordering between sets or bags.  It is an error to compare sets or bags with different element comparators.
 
 </p><h1>Implementation</h1>
 
