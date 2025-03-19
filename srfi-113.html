@@ -22,7 +22,6 @@ Sets and bags
 
 John Cowan
 
-<p>
 <h1>Status</h1>
 
 <p>This SRFI is currently in <em>final</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+113+at+srfi+dotschemers+dot+org">srfi-113@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-113">archive</a>.</p>
@@ -447,7 +446,7 @@ Applies <em>proc</em> to each unique element of <em>bag</em> in arbitrary order,
 
 Invokes <em>proc</em> on each unique element of <em>bag</em> in arbitrary order, passing the number of occurrences as a second argument and the result of the previous invocation as a third argument.  For the first invocation, <em>nil</em> is used as the third argument.  Returns the result of the last invocation.
 
-</p><p><code>(bag-increment! </code><em>bag<code> </code>element<code> </code>count</em><code>)</code></p><p><code>(bag-decrement! </code><em>bag<code> </code>element<code> </code>count</em><code>)</code></p><p>
+</p><p><code>(bag-increment! </code><em>bag element count</em><code>)</code></p><p><code>(bag-decrement! </code><em>bag element count</em><code>)</code></p><p>
 
 Linear update procedures that return a bag with the same elements as <em>bag</em>, but with the element count of <em>element</em> in <em>bag</em> increased or decreased by the exact integer <em>count</em> (but not less than zero).
 
