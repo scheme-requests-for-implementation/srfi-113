@@ -104,7 +104,7 @@ John Cowan
 <p>It is an error to rely upon these procedures working by side effect. For example, this is not guaranteed to work:</p>
 
 <pre>
-        (let* ((set1 (set 'a 'b 'c))      ; set1 = {a,b,c}.
+        (let* ((set1 (set symbol-comparator 'a 'b 'c))      ; set1 = {a,b,c}.
                (set2 (set-adjoin! set1 'd)))   ; Add d to {a,b,c}.
           set1) ; Could be either {a,b,c} or {a,b,c,d}.
 </pre>
@@ -112,7 +112,7 @@ John Cowan
 <p>However, this is well-defined:</p>
 
 <pre>
-        (let ((set1 (set 'a 'b 'c)))
+        (let ((set1 (set symbol-comparator 'a 'b 'c)))
           (set-adjoin! set1 'd)) ; Add d to {a,b,c}.
 </pre>
   
@@ -266,8 +266,8 @@ Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate
 <p>Applies <em>proc</em> to each element of <em>set</em> in arbitrary order and returns a newly allocated set, created as if by <code>(set </code><em>comparator</em><code>)</code>, which contains the results of the applications.  For example:</p>
 
 <pre>
-        (set-map string-ci-comparator symbol-&gt;string (set eq? 'foo 'bar 'baz))
-             =&gt; (set string-ci-comparator "foo" "bar" "baz")
+        (set-map string-ci-comparator symbol-&gt;string (set symbol-comparator 'foo 'bar 'baz))
+             ≡ (set string-ci-comparator "foo" "bar" "baz")
 </pre>
 
 <p>Note that, when <em>proc</em> defines a mapping that is not 1:1, some of the mapped objects may be equivalent in the sense of <em>comparator's</em> equality predicate, and in this case duplicate elements are omitted as in the set constructor.  For example:</p>
@@ -276,7 +276,7 @@ Returns <code>#t</code> if every element of <em>set</em> satisfies <em>predicate
 (set-map integer-comparator
          (lambda (x) (quotient x 2))
          (set integer-comparator 1 2 3 4 5))
- => (set integer-comparator 0 1 2)
+ ≡ (set integer-comparator 0 1 2)
 </pre>
 
 <p>If the elements are the same in the sense of <code>eqv?</code>, it is unpredictable which one will be preserved in the result.</p>
