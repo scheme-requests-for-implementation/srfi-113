@@ -12,7 +12,7 @@ keywords: [[https://srfi.schemers.org/?keywords=data-structure][Data Structure]]
 This repository hosts [[https://srfi.schemers.org/srfi-113/][SRFI 113]]: Sets and bags, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
 This SRFI is in /final/ status.
-See also [[/srfi-217/][SRFI 217: Integer Sets]].
+See also [[/srfi-217/][SRFI 217: Integer Sets]] and [[/srfi-289/][SRFI 289: Unordered sets and bags]].
 The full documentation for this SRFI can be found in the [[https://srfi.schemers.org/srfi-113/srfi-113.html][SRFI Document]].
 
 If you'd like to participate in the discussion of this SRFI, or report issues with it, please [[https://srfi.schemers.org/srfi-113/][join the SRFI-113 mailing list]] and send your message there.
